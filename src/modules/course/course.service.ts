@@ -20,6 +20,7 @@ export class CourseService {
       ...(!columns?.all && {
         columns: {
           id: true,
+
           ...(columns || {}),
         },
       }),

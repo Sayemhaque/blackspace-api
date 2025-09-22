@@ -1,4 +1,4 @@
-import { Body, Controller, Logger, Post } from '@nestjs/common';
+import { Body, Controller, Get, Logger, Param, Post } from '@nestjs/common';
 import { aiCategoryCreateAgent } from '../category/ai-agents/ai-category-agent';
 import { CategoryService } from '../category/category.service';
 import { AiCreateCategoryDto } from '../category/dto/create-category.dto';
@@ -60,5 +60,27 @@ export class CourseController {
     };
 
     return this.courseService.create(courseDto);
+  }
+
+  @Get()
+  findAll() {
+    return this.courseService.findAll({
+      title: true,
+      description: true,
+      price: true,
+      discount: true,
+      categoryId: true,
+      image: true,
+    });
+  }
+
+  @Get(':courseId')
+  findOne(@Param('courseId') courseId: number) {
+    return this.courseService.findById(courseId, {
+      title: true,
+      description: true,
+      price: true,
+      discount: true,
+    });
   }
 }

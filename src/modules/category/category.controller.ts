@@ -2,7 +2,7 @@ import { Body, Controller, Get, Post } from '@nestjs/common';
 import { CategoryService } from './category.service';
 import { AiCreateCategoryDto } from './dto/create-category.dto';
 
-@Controller('category')
+@Controller('categories')
 export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}
 
@@ -13,6 +13,9 @@ export class CategoryController {
 
   @Get()
   findAll() {
-    return this.categoryService.findAll();
+    return this.categoryService.findAll({
+      title: true,
+      description: true,
+    });
   }
 }
