@@ -4,8 +4,9 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import configuration from './config/configuration';
 import { DatabaseModule } from './drizzle/database.module';
-import { CourseModule } from './modules/course/course.module';
 import { CategoryModule } from './modules/category/category.module';
+import { CourseModule } from './modules/course/course.module';
+import { CourseModules } from './modules/module/course.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { CategoryModule } from './modules/category/category.module';
     DatabaseModule,
     CourseModule,
     CategoryModule,
+    CourseModules,
   ],
   controllers: [AppController],
   providers: [AppService],

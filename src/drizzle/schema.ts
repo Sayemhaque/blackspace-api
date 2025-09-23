@@ -1,5 +1,6 @@
 import { relations } from 'drizzle-orm';
 import {
+  bigint,
   int,
   mysqlTable,
   serial,
@@ -24,7 +25,7 @@ export const users = mysqlTable('users', {
   createdAt: timestamp('created_at', { mode: 'date', fsp: 3 })
     .notNull()
     .defaultNow(),
-  updatedBy: int('updated_by'),
+  updatedBy: bigint('updated_by', { mode: 'number' }),
 });
 
 export const courses = mysqlTable('courses', {
@@ -34,7 +35,7 @@ export const courses = mysqlTable('courses', {
   price: int('price').notNull(),
   discount: int('discount'),
   image: varchar('image', { length: 255 }),
-  categoryId: int('category_id', { unsigned: true })
+  categoryId: bigint('category_id', { mode: 'number', unsigned: true })
     .notNull()
     .references(() => categories.id),
   createdAt: timestamp('created_at', { mode: 'date', fsp: 3 })
@@ -48,6 +49,38 @@ export const courses = mysqlTable('courses', {
 export const categories = mysqlTable('categories', {
   id: serial('id').primaryKey(),
   title: varchar('title', { length: 255 }).notNull(),
+  description: text('description'),
+  createdAt: timestamp('created_at', { mode: 'date', fsp: 3 })
+    .notNull()
+    .defaultNow(),
+  updatedAt: timestamp('updated_at', { mode: 'date', fsp: 3 }).$onUpdate(
+    () => new Date(),
+  ),
+});
+
+export const modules = mysqlTable('modules', {
+  id: serial('id').primaryKey(),
+  courseId: bigint('course_id', { mode: 'number', unsigned: true })
+    .notNull()
+    .references(() => courses.id, { onDelete: 'cascade', onUpdate: 'cascade' }),
+  title: varchar('title', { length: 255 }).notNull(),
+  sequence: int('sequence').notNull(),
+  createdAt: timestamp('created_at', { mode: 'date', fsp: 3 })
+    .notNull()
+    .defaultNow(),
+  updatedAt: timestamp('updated_at', { mode: 'date', fsp: 3 }).$onUpdate(
+    () => new Date(),
+  ),
+});
+
+export const lessons = mysqlTable('lessons', {
+  id: serial('id').primaryKey(),
+  moduleId: bigint('module_id', { mode: 'number', unsigned: true })
+    .notNull()
+    .references(() => modules.id, { onDelete: 'cascade', onUpdate: 'cascade' }),
+  sequence: int('sequence').notNull(),
+  title: varchar('title', { length: 255 }).notNull(),
+  url: varchar('video_url', { length: 255 }),
   description: text('description'),
   createdAt: timestamp('created_at', { mode: 'date', fsp: 3 })
     .notNull()

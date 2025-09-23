@@ -1,10 +1,10 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { and, eq, InferInsertModel, InferSelectModel } from 'drizzle-orm';
 import { MySql2Database } from 'drizzle-orm/mysql2';
-import { dbTag } from 'src/config/configuration';
 import { Category } from 'src/drizzle/model';
 import { ColumnSelection, SelectedColumns } from 'test/utils/type';
 import * as schema from '../../drizzle/schema';
+import { dbTag } from 'src/config/configuration';
 
 @Injectable()
 export class CategoryService {
